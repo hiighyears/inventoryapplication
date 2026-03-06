@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=title%></title>
-<link rel="stylesheet" href="/index.css">
-</head>
-<body>
-    <h1>Messages</h1>
-    <a href="/new">New Message</a>
-      <% messages.forEach((message)=>{ %> 
-    <h4> Name : <%= message.name %> </h4>
-    <h4> Time Added : <%= message.timeadded %> </h4>
-     <h2> Message : <%= message.message %> </h2>
-      <a href="/new/messages/<%=  message.id %>">Open</a>
-    <% })  %> 
-   
-</body>
-</html>
+<h1>Categories</h1>
+
+<a href="/category/new">Add Category</a>
+
+<ul>
+<% categories.forEach(cat=>{ %>
+<li>
+<a href="/category/<%=cat.id%>">
+<%=cat.name%>
+</a>
+</li>
+<% }) %>
+</ul>
+
+<a href="/item/new">Add Item</a>

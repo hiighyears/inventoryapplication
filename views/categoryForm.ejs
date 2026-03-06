@@ -1,0 +1,14 @@
+<h1>Add Category</h1>
+
+<% errors.forEach(e=>{ %>
+<p><%=e.msg%></p>
+<% }) %>
+
+<form method="POST">
+
+<label>Name</label>
+<input name="name">
+
+<button>Add</button>
+
+</form>

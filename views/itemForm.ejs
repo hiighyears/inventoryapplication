@@ -1,0 +1,26 @@
+<h1>Add Item</h1>
+
+<% errors.forEach(e=>{ %>
+<p><%=e.msg%></p>
+<% }) %>
+
+<form method="POST">
+
+<label>Name</label>
+<input name="name">
+
+<label>Price</label>
+<input name="price">
+
+<label>Category</label>
+<select name="category">
+<% categories.forEach(cat=>{ %>
+<option value="<%=cat.id%>">
+<%=cat.name%>
+</option>
+<% }) %>
+</select>
+
+<button>Add</button>
+
+</form>

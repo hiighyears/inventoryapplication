@@ -1,34 +1,41 @@
-#! /usr/bin/env node
 require("dotenv").config();
 const { Client } = require("pg");
 
 const SQL = `
-CREATE TABLE IF NOT EXISTS messages (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name VARCHAR ( 255 ),
-  timeadded VARCHAR ( 255 ),
-  message VARCHAR ( 255 )
+CREATE TABLE IF NOT EXISTS categories (
+ id SERIAL PRIMARY KEY,
+ name VARCHAR(255)
 );
 
-INSERT INTO messages (name, timeadded, message)
+CREATE TABLE IF NOT EXISTS items (
+ id SERIAL PRIMARY KEY,
+ name VARCHAR(255),
+ price INTEGER,
+ category_id INTEGER REFERENCES categories(id)
+);
+
+INSERT INTO categories (name)
+VALUES ('Laptops'),('Keyboards'),('Monitors');
+
+INSERT INTO items (name, price, category_id)
 VALUES
-  ('Alice', 'Today', 'Hello world'),
-  ('Bob', 'Yesterday', 'Nice to meet you'),
-  ('Sam', 'Today', 'Learning Node!');
+('MacBook Pro',2000,1),
+('Dell XPS',1800,1),
+('Mechanical Keyboard',120,2),
+('LG Monitor',300,3);
 `;
 
 async function main() {
-  console.log("seeding...");
   const client = new Client({
     connectionString: process.env.DATABASE_URL || "postgresql://n@localhost:5432/top_users",
-    ssl: process.env.DATABASE_URL
-      ? { rejectUnauthorized: false }
-      : false,
+    ssl: process.env.DATABASE_URL ? { rejectUnauthorized:false } : false
   });
+
   await client.connect();
   await client.query(SQL);
   await client.end();
-  console.log("done");
+
+  console.log("database seeded");
 }
 
 main();

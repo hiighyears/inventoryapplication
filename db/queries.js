@@ -1,32 +1,61 @@
 const pool = require("./pool");
 
-async function getAllmessages() {
-  const result = await pool.query("SELECT current_database()");
-  console.log(result.rows);
-  const { rows } = await pool.query("SELECT * FROM messages");
+async function getCategories() {
+  const { rows } = await pool.query("SELECT * FROM categories");
   return rows;
-
 }
 
-async function addMessage(name, message, timeadded) {
-  await pool.query(
-    "INSERT INTO messages (name, timeadded, message) VALUES ($1, $2, $3)",
-    [name, timeadded, message]
-  );
-}
-
-async function getMessageById(id) {
+async function getCategory(id) {
   const { rows } = await pool.query(
-    "SELECT * FROM messages WHERE id = $1",
+    "SELECT * FROM categories WHERE id=$1",
     [id]
   );
-
   return rows[0];
 }
 
+async function getItemsByCategory(id) {
+  const { rows } = await pool.query(
+    "SELECT * FROM items WHERE category_id=$1",
+    [id]
+  );
+  return rows;
+}
+
+async function getItem(id) {
+  const { rows } = await pool.query(
+    "SELECT * FROM items WHERE id=$1",
+    [id]
+  );
+  return rows[0];
+}
+
+async function addCategory(name) {
+  await pool.query(
+    "INSERT INTO categories (name) VALUES ($1)",
+    [name]
+  );
+}
+
+async function addItem(name, price, category) {
+  await pool.query(
+    "INSERT INTO items (name, price, category_id) VALUES ($1,$2,$3)",
+    [name, price, category]
+  );
+}
+
+async function deleteItem(id) {
+  await pool.query(
+    "DELETE FROM items WHERE id=$1",
+    [id]
+  );
+}
 
 module.exports = {
-  getAllmessages,
-  addMessage,
-  getMessageById,
+  getCategories,
+  getCategory,
+  getItemsByCategory,
+  getItem,
+  addCategory,
+  addItem,
+  deleteItem
 };
